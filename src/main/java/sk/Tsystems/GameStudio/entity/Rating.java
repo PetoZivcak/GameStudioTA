@@ -25,6 +25,9 @@ private long indent;
         this.rated_on = rated_on;
     }
 
+    public Rating() {
+    }
+
     public String getGame() {
         return game;
     }

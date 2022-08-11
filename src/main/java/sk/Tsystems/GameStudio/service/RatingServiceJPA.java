@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 import sk.Tsystems.GameStudio.entity.Rating;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -15,9 +17,28 @@ public class RatingServiceJPA implements RatingService{
 EntityManager entityManager;
     @Override
     public void setRating(Rating rating) {
+        Rating ratingWrite=null;
+try {
+
+    ratingWrite= (Rating)entityManager.createQuery("select r from Rating r where r.game= :game and r.username= :user ")
+
+            .setParameter("game",rating.getGame())
+            .setParameter("user",rating.getUsername())
+            .getSingleResult();
+    ratingWrite.setRated_on(new Date());
+    ratingWrite.setRating(rating.getRating());
+
+} catch (NoResultException e){
+    ratingWrite=new Rating(rating.getGame(),rating.getUsername(),rating.getRating(),new Date());
+//    ratingWrite.setGame(rating.getGame());
+//    ratingWrite.setUsername(rating.getUsername());
+//    ratingWrite.setRating(rating.getRating());
+//    ratingWrite.setRated_on(new Date());
+
+   entityManager.persist(ratingWrite);
+}
 
 
-           // entityManager.persist(rating);
 
         }
 

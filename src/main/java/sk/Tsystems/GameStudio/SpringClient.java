@@ -19,16 +19,16 @@ public class SpringClient {
 //    public CommandLineRunner runnerJPA(PlaygroundJPA console){
 //        return s->console.play();
 //    }
-    @Bean
-    public PlaygroundJPA consoleJPA(){
-        return new PlaygroundJPA();
-    }
-
 //    @Bean
-//    public CommandLineRunner runner(ConsoleUI console){
-//
-//        return s -> console.play();
-//    }
+////    public PlaygroundJPA consoleJPA(){
+////        return new PlaygroundJPA();
+////    }
+
+    @Bean
+    public CommandLineRunner runner(ConsoleUI console){
+
+        return s -> console.play();
+    }
     @Bean
     public ConsoleUI console(){
         return new ConsoleUI();
