@@ -1,70 +1,51 @@
-//package sk.Tsystems.GameStudio.service;
-//
-//import org.junit.jupiter.api.Test;
-//import sk.Tsystems.GameStudio.builders.CommentBuilder;
-//import sk.Tsystems.GameStudio.entity.Comment;
-//import sk.Tsystems.GameStudio.entity.Rating;
-//
-//import java.util.List;
-//
-//public class CommentServiceJPATest {
-//    private CommentService commentServiceJPA = new CommentServiceJPA();
-//
-//    @Test
-//    public void addComment_should_persistComment_when_validCommentEntered() {
-//        // prepare
-//        Comment newCommentUsingBuilderPattern = new CommentBuilder()
-//                 .withGame("asdf")
-//                 .withUsername("23")
-//                 .build();
-//
-//        // run
-//        commentServiceJPA.addComment(newComment);
-//
-//        // assert
-//    }
-//
-//    @Test
-//    public void addComment_should_persistComment_when_validCommentWithLongUsername() {
-//        // prepare
-//        Comment newCommentUsingBuilderPattern = new CommentBuilder()
-//                .withGame("asdf")
-//                .withUsername("23sssssssssssssssssssssssssssssssssssssss")
-//                .build();
-//
-//        // run
-//        commentServiceJPA.addComment(newComment);
-//
-//        // assert
-//    }
-//
-//    @Test
-//    public void addComment_should_NotPersistComment_when_nullEntered() {
-//        // run
-//        commentServiceJPA.addComment(null);
-//
-//        // assert
-//    }
-//
-//    @Test
-//    public void addComment_should_NotPersistComment_when_emptyComment() {
-//        // prepare
-//       Comment c = new Comment();
-//       List<Rating> ratings = new List<Rating>();
-//       Rating r1 = new Rating();
-//               ratings.add(r1);
-//               c.setRatings(ratings);
-//        Rating r2 = new Rating();
-//        ratings.add(r2);
-//        c.setRatings(ratings);
-//
-//
-//            Comment c = new CommentBuilder()
-//                    .withUsername("asdf")
-//                    .withRating(new RatingBuilder().build())
-//                    .withRating(new RatingBuilder().build())
-//                    .withRating(new RatingBuilder().build())
-//                    .build();
-//
-//    }
-//}
+package sk.Tsystems.GameStudio.service;
+
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import sk.Tsystems.GameStudio.SpringClient;
+import sk.Tsystems.GameStudio.builders.CommentBuilder;
+import sk.Tsystems.GameStudio.entity.Comment;
+import sk.Tsystems.GameStudio.entity.Rating;
+
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = SpringClient.class)
+public class CommentServiceJPATest {
+    @Autowired
+    CommentService commentService;
+
+    @Test
+    public void addComment_should_persistComment_when_validCommentEntered() {
+        commentService.reset();
+        Comment comment = new Comment("minesweeper", "Peto", "Comment1", new Date());
+        Comment comment2 = new Comment("minesweeper", "Peto", "Comment2", new Date());
+        Comment comment3 = new Comment("stones", "Peto", "Comment3", new Date());
+        commentService.addComment(comment);
+        commentService.addComment(comment2);
+        commentService.addComment(comment3);
+
+        assertEquals(2, commentService.getComments("minesweeper").size());
+        assertEquals(1,commentService.getComments("stones").size());
+
+
+    }
+
+    @Test
+    public void addComment_should_persistComment_when_validCommentWithLongUsername() {
+        commentService.reset();
+        Comment comment = new Comment("minesweeper", "JaSomVelikanskeMenoKtoreSaMaUlozitDoDatabazy", "Comment1", new Date());
+        commentService.addComment(comment);
+        assertEquals(1, commentService.getComments("minesweeper").size());
+    }
+
+
+
+
+}

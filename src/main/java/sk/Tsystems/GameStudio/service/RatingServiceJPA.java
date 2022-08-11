@@ -58,12 +58,17 @@ try {
     public int getRating(String game, String username) {
 
 
-        return 0;
+        return (Integer) entityManager.createQuery("SELECT r.rating FROM Rating r WHERE r.game=:game and r.username=:username" )
+                .setParameter("game",game)
+                .setParameter("username",username)
+                .getSingleResult();
     }
 
     @Override
     public void reset() {
-        entityManager.createNativeQuery("DELETE FROM rating");
+        entityManager.createNativeQuery("DELETE FROM rating")
+                .executeUpdate();
+
 
     }
 }
