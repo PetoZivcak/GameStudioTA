@@ -1,9 +1,7 @@
 package sk.Tsystems.GameStudio.minesweeper.consoleui;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import sk.Tsystems.GameStudio.entity.Comment;
-import sk.Tsystems.GameStudio.entity.Rating;
-import sk.Tsystems.GameStudio.entity.Score;
+import sk.Tsystems.GameStudio.entity.*;
 import sk.Tsystems.GameStudio.minesweeper.Minesweeper;
 import sk.Tsystems.GameStudio.minesweeper.Settings;
 import sk.Tsystems.GameStudio.minesweeper.UserInterface;
@@ -31,6 +29,12 @@ public class ConsoleUI implements UserInterface {
      */
 
     private String userName;
+    private String userName1;
+    private String selfEvaluation;
+    private String country;
+    private Country countryToWrite;
+    private Player playerToWrite;
+    private String occupation;
     private String dificultyLevel;
     private Field field;
     private String ratingString;
@@ -55,6 +59,13 @@ public class ConsoleUI implements UserInterface {
 
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private PlayerService playerService;
+    @Autowired
+    private OccupationService occupationService;
+    @Autowired
+    private CountryService countryService;
+
 
     /**
      * Reads line of text from the reader.
@@ -77,14 +88,107 @@ public class ConsoleUI implements UserInterface {
     @Override
     public void newGameStarted(Field field) {
 
-        System.out.println("Zadaj meno hraca");
+        System.out.println("Zadaj uzivatelske meno");
         userName = readLine();
 
-        while (!userNameCheck(userName)) {
+        while (!userNameCheck(userName, 32)) {
 
             userName = readLine();
 
+
         }
+        if (playerService.getPlayersByUserName(userName) != null) {
+            System.out.println("Vyber si jedneho z existujucich hracov, alebo pridaj noveho vyplnenim vstupu: \n" + playerService.getPlayersByUserName(userName));
+        } else {
+
+        }
+
+        System.out.println("Zadaj cele meno, ak pouzijes existujuce, hrajes ako existujuci hrac, ak zadas nove, vytvoris noveho hraca ");
+        userName1 = readLine();
+        while (!userNameCheck(userName1, 128)) {
+            userName1 = readLine();
+        }
+        System.out.println("Zadaj sebahodnotenie od 1 do 10");
+        selfEvaluation = readLine();
+
+        int checker = 0;
+        while (checker == 0) {
+            while (isParsable(selfEvaluation) == false) {
+                System.out.println("Zadajte prosim cislo");
+                selfEvaluation = readLine();
+            }
+            if (Integer.parseInt(selfEvaluation) < 1 || Integer.parseInt(selfEvaluation) > 10) {
+                System.out.println("Zadajte prosim cislo od 1 do 10");
+                selfEvaluation = readLine();
+            } else {
+                checker = 1;
+            }
+        }
+
+        if (playerService.getPlayerByUserNameAndFullName(userName,userName1)==null){
+//if(playerService.getPlayerByUserNameAndFullName(userName,userName1).getUsername().equals(userName)&&playerService.getPlayerByUserNameAndFullName(userName,userName1).getFullname().equals(userName1)){
+//   playerToWrite=playerService.getPlayerByUserNameAndFullName(userName,userName1);
+//   playerToWrite.setSelfevaluation(Integer.parseInt(selfEvaluation));
+//   playerService.addPlayer(playerToWrite);
+//}else{
+
+            System.out.println("Dostupne krajiny:");
+            for (int nrOfCountries = 0; nrOfCountries < countryService.getCountries().size(); nrOfCountries++) {
+                System.out.println("Country " + (nrOfCountries + 1) + " " + countryService.getCountries().get(nrOfCountries));
+
+            }
+            System.out.println("Pre vyber zadajte cislo krajiny, alebo pridajte novu stlacenim cisla " + (countryService.getCountries().size() + 1) + ":");
+            country = readLine();
+            checker = 0;
+            while (checker == 0) {
+                while (isParsable(country) == false) {
+                    System.out.println("Zadajte prosim cislo");
+                    country = readLine();
+                }
+                if (Integer.parseInt(country) < 1 || Integer.parseInt(country) > countryService.getCountries().size() + 1) {
+                    System.out.println("Zadajte prosim cislo od 1 do " + (countryService.getCountries().size() + 1));
+                    country = readLine();
+                } else {
+                    checker = 1;
+                }
+            }
+            if (Integer.parseInt(country) == (countryService.getCountries().size() + 1)) {
+                System.out.println("Zadajte meno krajiny: ");
+                country = readLine();
+                countryToWrite = new Country(country);
+                countryService.addCountry(countryToWrite);
+            } else {
+                countryToWrite = countryService.getCountry(countryService.getCountries().get(Integer.parseInt(country) - 1).getCountry());
+
+            }
+            System.out.println("Vyber si jedno z povolani: " + (occupationService.getOccupations().size()));
+            occupation = readLine();
+            checker = 0;
+            while (checker == 0) {
+                while (isParsable(occupation) == false) {
+                    System.out.println("Zadajte prosim cislo");
+                    occupation = readLine();
+                }
+                if (Integer.parseInt(occupation) < 1 || Integer.parseInt(occupation) > occupationService.getOccupations().size()) {
+                    System.out.println("Zadajte prosim cislo od 1 do " + (occupationService.getOccupations().size()));
+                    occupation = readLine();
+                } else {
+                    checker = 1;
+                }
+            }
+
+            playerToWrite = new Player(userName, userName1, Integer.parseInt(selfEvaluation), countryToWrite,occupationService.getOccupations().get(Integer.parseInt(occupation)-1));
+           playerService.addPlayer(playerToWrite);
+        }else{
+            if(playerService.getPlayerByUserNameAndFullName(userName,userName1).getUsername().equals(userName)&&playerService.getPlayerByUserNameAndFullName(userName,userName1).getFullname().equals(userName1)){
+   playerToWrite=playerService.getPlayerByUserNameAndFullName(userName,userName1);
+   playerToWrite.setSelfevaluation(Integer.parseInt(selfEvaluation));
+   playerService.addPlayer(playerToWrite);
+}
+
+        }
+//            }
+
         System.out.println("Vyberte si prosim obtiaznost, alebo potvrdte obtiaznost BEGINNER stlacenim tlacitka ENTER");
         System.out.println("1 [BEGINNER], 2 [EXPERT], 3 [INTERMEDIATE]");
         dificultyLevel = readLine();
@@ -266,9 +370,9 @@ public class ConsoleUI implements UserInterface {
         return result;
     }
 
-    public boolean userNameCheck(String userName) {
+    public boolean userNameCheck(String userName, int lenghtOfString) {
         boolean result = true;
-        if (userName.length() > 64) {
+        if (userName.length() > lenghtOfString) {
             System.out.println("Zadali ste prilis dlhe meno, prosim zadajte meno do 64 znakov");
             result = false;
         }
@@ -338,16 +442,44 @@ public class ConsoleUI implements UserInterface {
             }
             System.out.println("Average rating of a Game Minesweeper------------------------------------------------");
 
-            System.out.printf("%nAverage rating: %d%n",  ratingService.getAverageRating("minesweeper"));
+            System.out.printf("%nAverage rating: %d%n", ratingService.getAverageRating("minesweeper"));
 
             System.exit(0);
         } catch (Exception e) {
-            System.err.println("Chyba  pripojenia na databazu, vase skore ani hodnotenie nemoze byt zaznamenane, ukoncujem konzolu: "+ e.getMessage());
+            System.err.println("Chyba  pripojenia na databazu, vase skore ani hodnotenie nemoze byt zaznamenane, ukoncujem konzolu: " + e.getMessage());
             e.printStackTrace();
             System.exit(0);
         }
 
     }
 
+    public static boolean isParsable(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (final NumberFormatException e) {
+            return false;
+        }
+    }
 
+//    //kontroluje, ci je vstup parsovatelny integer v rozmedzi hodnot rangeValue1 a rangeValue2
+//    private int numberInputCheck(String input, int rangeValue1, int rangeValue2, String message1, String message2) {
+//        int returnValue = 0;
+//        int checker = 0;
+//        while (checker == 0) {
+//            while (isParsable(input) == false&& checker==0)  {
+//                System.out.println(message1);
+//                input = readLine();}
+//
+//                if (Integer.parseInt(selfEvaluation) < 1 || Integer.parseInt(selfEvaluation) > 10) {
+//                    System.out.println(message2);
+//                    input = readLine();
+//                } else {
+//                    checker = 1;
+//                    returnValue = Integer.parseInt(input);
+//                }
+//
+//        }
+//        return returnValue;
+//    }
 }
