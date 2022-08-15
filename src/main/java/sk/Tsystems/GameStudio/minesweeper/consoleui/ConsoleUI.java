@@ -85,7 +85,7 @@ public class ConsoleUI implements UserInterface {
      *
      * @param field field of mines and clues
      */
-    @Override
+   // @Override
     public void newGameStarted(Field field) {
 
         System.out.println("Zadaj uzivatelske meno");
@@ -125,7 +125,7 @@ public class ConsoleUI implements UserInterface {
             }
         }
 
-        if (playerService.getPlayerByUserNameAndFullName(userName,userName1)==null){
+        if (playerService.getPlayerByUserNameAndFullName(userName, userName1) == null) {
 //if(playerService.getPlayerByUserNameAndFullName(userName,userName1).getUsername().equals(userName)&&playerService.getPlayerByUserNameAndFullName(userName,userName1).getFullname().equals(userName1)){
 //   playerToWrite=playerService.getPlayerByUserNameAndFullName(userName,userName1);
 //   playerToWrite.setSelfevaluation(Integer.parseInt(selfEvaluation));
@@ -177,14 +177,14 @@ public class ConsoleUI implements UserInterface {
                 }
             }
 
-            playerToWrite = new Player(userName, userName1, Integer.parseInt(selfEvaluation), countryToWrite,occupationService.getOccupations().get(Integer.parseInt(occupation)-1));
-           playerService.addPlayer(playerToWrite);
-        }else{
-            if(playerService.getPlayerByUserNameAndFullName(userName,userName1).getUsername().equals(userName)&&playerService.getPlayerByUserNameAndFullName(userName,userName1).getFullname().equals(userName1)){
-   playerToWrite=playerService.getPlayerByUserNameAndFullName(userName,userName1);
-   playerToWrite.setSelfevaluation(Integer.parseInt(selfEvaluation));
-   playerService.addPlayer(playerToWrite);
-}
+            playerToWrite = new Player(userName, userName1, Integer.parseInt(selfEvaluation), countryToWrite, occupationService.getOccupations().get(Integer.parseInt(occupation) - 1));
+            playerService.addPlayer(playerToWrite);
+        } else {
+            if (playerService.getPlayerByUserNameAndFullName(userName, userName1).getUsername().equals(userName) && playerService.getPlayerByUserNameAndFullName(userName, userName1).getFullname().equals(userName1)) {
+                playerToWrite = playerService.getPlayerByUserNameAndFullName(userName, userName1);
+                playerToWrite.setSelfevaluation(Integer.parseInt(selfEvaluation));
+                playerService.addPlayer(playerToWrite);
+            }
 
         }
 //            }

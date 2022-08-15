@@ -19,7 +19,7 @@ public class SpringClient {
     public static void main(String[] args) {
 
         SpringApplication.run(SpringClient.class);
-//        new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);
+      // new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);
     }
 
 //    @Bean
@@ -31,16 +31,24 @@ public class SpringClient {
 //        return new PlaygroundJPA();
 //    }
 
-    @Bean
-    public CommandLineRunner runner(ConsoleUI console){
+//    @Bean
+//    public CommandLineRunner runner(ConsoleUI console){
+//
+//        return s -> console.play();
+//    }
+//    @Bean
+//    public ConsoleUI console(){
+//        return new ConsoleUI();
+//    }
+@Bean
+public CommandLineRunner runner(sk.Tsystems.GameStudio.stones.consoleui.ConsoleUI console){
 
-        return s -> console.play();
-    }
+    return s -> console.play();
+}
     @Bean
-    public ConsoleUI console(){
-        return new ConsoleUI();
+    public sk.Tsystems.GameStudio.stones.consoleui.ConsoleUI console(){
+        return new sk.Tsystems.GameStudio.stones.consoleui.ConsoleUI();
     }
-
     @Bean
     public ScoreService scoreService(){
         return new ScoreServiceJPA();

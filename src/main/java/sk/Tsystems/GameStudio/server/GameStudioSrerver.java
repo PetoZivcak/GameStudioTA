@@ -26,24 +26,38 @@ public class GameStudioSrerver {
         //SpringApplication.run(SpringClient.class);
         SpringApplication.run(GameStudioSrerver.class);
     }
+
     @Bean
-    public ScoreService scoreService(){
+    public ScoreService scoreService() {
         return new ScoreServiceJPA();
     }
+
     @Bean
-    public ScoreService scoreService2(){
-        return new ScoreServiceJDBC();
+    public ScoreService scoreService2() {
+        return new ScoreServiceJPA();
     }
+
     @Bean
-    public CommentService commentService(){
+    public CommentService commentService() {
         return new CommentServiceJPA();
     }
 
+    @Bean
+    public PlayerService playerService() {
+        return new PlayerServiceJPA();
+    }
 
+    @Bean
+    public OccupationService occupationService() {
+        return new OccupationServiceJPA();
+    }
 
-
-
-
+    @Bean
+    public CountryService countryService() {
+        return new CountryServiceJPA();
+    }
+    @Bean
+    public RatingService ratingService(){return  new RatingServiceJPA();}
 
 
 }
