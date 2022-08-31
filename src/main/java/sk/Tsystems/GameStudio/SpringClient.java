@@ -9,17 +9,18 @@ import org.springframework.context.annotation.Bean;
 //import sk.Tsystems.GameStudio.minesweeper.PlaygroundJPA;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.web.client.RestTemplate;
 import sk.Tsystems.GameStudio.minesweeper.PlaygroundJPA;
 import sk.Tsystems.GameStudio.minesweeper.consoleui.ConsoleUI;
 import sk.Tsystems.GameStudio.service.*;
 
 @SpringBootApplication
-@ComponentScan(excludeFilters = @ComponentScan.Filter(type= FilterType.REGEX,pattern = "sk.Tsystems.GameStudio.server.*"))
+@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "sk.Tsystems.GameStudio.server.*"))
 public class SpringClient {
     public static void main(String[] args) {
 
-        SpringApplication.run(SpringClient.class);
-      // new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);
+     //   SpringApplication.run(SpringClient.class);
+       new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);
     }
 
 //    @Bean
@@ -32,15 +33,17 @@ public class SpringClient {
 //    }
 
 //    @Bean
-//    public CommandLineRunner runner(ConsoleUI console){
+//    public CommandLineRunner runner(ConsoleUI console) {
 //
 //        return s -> console.play();
 //    }
+//
 //    @Bean
-//    public ConsoleUI console(){
+//    public ConsoleUI console() {
 //        return new ConsoleUI();
 //    }
-@Bean
+
+    @Bean
 public CommandLineRunner runner(sk.Tsystems.GameStudio.stones.consoleui.ConsoleUI console){
 
     return s -> console.play();
@@ -49,33 +52,61 @@ public CommandLineRunner runner(sk.Tsystems.GameStudio.stones.consoleui.ConsoleU
     public sk.Tsystems.GameStudio.stones.consoleui.ConsoleUI console(){
         return new sk.Tsystems.GameStudio.stones.consoleui.ConsoleUI();
     }
+//    @Bean
+//    public ScoreService scoreService(){
+//        return new ScoreServiceJPA();
+//    }
     @Bean
-    public ScoreService scoreService(){
-        return new ScoreServiceJPA();
+    public ScoreService scoreService() {
+        return new ScoreServiceREST();
     }
-    @Bean
+
+//    @Bean
+//    public RatingService ratingService() {
+//        return new RatingServiceJPA();
+//    }
+
+        @Bean
     public RatingService ratingService(){
-        return new RatingServiceJPA();
+        return new RatingServiceRestClient();
+    }
+//    @Bean
+//    public CommentService commentService() {
+//        return new CommentServiceJPA();
+//    }
+
+    @Bean
+    public ServiceStudentGroupJPA serviceStudentGroupJPA() {
+        return new ServiceStudentGroupJPA();
+    }
+
+    @Bean
+    public ServiceStudentJPA serviceStudentJPA() {
+        return new ServiceStudentJPA();
+    }
+
+    @Bean
+    public PlayerService playerServiceJPA() {
+        return new PlayerServiceJPA();
+    }
+
+    @Bean
+    public CountryService countryServiceJPA() {
+        return new CountryServiceJPA();
+    }
+
+    @Bean
+    public OccupationService occupationServiceJPA() {
+        return new OccupationServiceJPA();
+    }
+
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
     @Bean
-    public CommentService commentService(){
-        return new CommentServiceJPA();
-    }
-    @Bean
-    public ServiceStudentGroupJPA serviceStudentGroupJPA(){return new ServiceStudentGroupJPA();}
-    @Bean
-    public ServiceStudentJPA serviceStudentJPA(){return new ServiceStudentJPA();}
-    @Bean
-    public PlayerService playerServiceJPA(){return new PlayerServiceJPA();}
-    @Bean
-    public CountryService countryServiceJPA(){return new CountryServiceJPA();}
-    @Bean
-    public OccupationService occupationServiceJPA(){return  new OccupationServiceJPA();}
-
-
-
-
-
+    public CommentService commentService(){return new CommentServiceRest();}
 
 
 }

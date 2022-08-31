@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="sk"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Stefan Korecko" />
+  <link rel="stylesheet"
+        href="/css/stones.css"
+        media="screen" />
+
+
+  <title>GameStudio - Stones</title>
+</head>
+
+<body>
+<div th:replace="fragments/fragments :: header"/>
+<main layout:fragment="content">
+<h2>Stones</h2>
+
+<div class="minesControl">
+     <a  class="abutton" href="/stones/new">Nova hra</a>
+</div>
+
+<!--<div th:utext="${@minesweeperController.fieldAsHtml}"></div>-->
+<div th:text="${stonesResult}"></div>
+<div>
+    <table class='minefield'>
+        <tr th:each="row: ${stonesField}">
+            <td th:each="square: ${row}">
+<!--                th:attr="class=${@minesweeperController.getTileClass(tile)}">-->
+                <a th:if="${gameStatus}">
+                    <span th:text="${@stonesController.getSquareText(square)}"></span>
+                </a>
+                <a th:if="${!gameStatus}" th:attr="href='/stones?row='+${rowStat.index}+'&column='+${squareStat.index}">
+                    <span th:text="${@stonesController.getSquareText(square)}"></span>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+    <section>
+        <h3 th:text="'Priemerné hodnotenie hry: '+${averageRating}"> </h3>
+        <h3>Najlepšie skóre</h3>
+        <table class="scores">
+            <tr>
+                <th>Poradie</th>
+                <th>Meno</th>
+                <th>Body</th>
+                <th>Dátum a čas hry</th>
+            </tr>
+            <tr th:each="score: ${bestScores}">
+                <td th:text="${scoreStat.index+1}"></td>
+                <td th:text="${score.username}"></td>
+                <td th:text="${score.points}"></td>
+                <td th:text="${score.playedOn}"></td>
+            </tr>
+        </table>
+    </section>
+    <selection >
+
+        <h3>Komentáre</h3>
+        <table class="scores">
+            <tr>
+                <th>Meno</th>
+                <th>Comment</th>
+                <th>Dátum</th>
+
+            </tr>
+            <tr th:each="comment: ${allComments}">
+                <td th:text="${comment.getUsername}"></td>
+                <td th:text="${comment.getComment}"></td>
+                <td th:text="${comment.getCommented_on}"></td>
+            </tr>
+        </table>
+    </selection>
+    <div th:insert="fragments/fragments :: commentFormStones"/>
+    <footer th:replace="fragments/fragments :: footer"/>
+  <!--<div th:text="${1+2}"></div>-->
+  <!--<div th:text="${@minesweeperController.getCurrTime()}"></div>-->
+  <!--<div th:text="${@minesweeperController.currTime}"></div>-->
+</main>
+
+</body>
+</html>

@@ -61,4 +61,21 @@ public class OccupationServiceJPA implements OccupationService{
         }
         return null;
     }
+    public Occupation getOccupationInt(int occupationId) {
+        try {
+
+            return   (Occupation) entityManager.createQuery("select c from Occupation c where c.ident= :ident ")
+
+                    .setParameter("ident", occupationId)
+                    .getSingleResult();
+
+
+
+        } catch (NoResultException e) {
+
+            // entityManager.persist(countryToWrite);
+
+        }
+        return null;
+    }
 }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"username", "fullname"})
+        @UniqueConstraint(columnNames = {"username"})
 })
 public class Player {
     @Id

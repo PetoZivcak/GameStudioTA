@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layoutGamestudio.html}"
+        lang="sk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Stefan Korecko" />
+    <link rel="stylesheet"
+          href="/css/western.css"
+          media="screen" />
+
+
+    <title>Gamestudio - Western</title>
+</head>
+
+<body>
+
+<main layout:fragment="content">
+
+    <h2>Western</h2>
+
+    <div class="minesControl">
+        <span th:text="${gameStatus}"></span>
+
+<a class="abutton" href="/western/start">Štart.</a>
+
+
+        <a  class="abutton" href="/western/new">Nová hra</a>
+
+    </div>
+
+    <section class="hotelArea">
+        <table class='westernfield'>
+            <tr th:each="row: ${westernField}">
+                <td th:each="tile: ${row}"
+                    th:attr="class=${@westernController.getTileClass(tile)}">
+                    <a class="firingArea" th:if="${isPlaying}" th:attr="href='/western?row='+${rowStat.index}+'&column='+${tileStat.index}">
+<!--                       / <span th:text="${@westernController.getTileText(tile)}"></span>-->
+                    </a>
+
+<!--                    <span th:if="not ${isPlaying}" th:text="${@minesweeperController.getTileText(tile)}"></span>-->
+
+                </td>
+            </tr>
+        </table>
+    </section>
+
+
+    <section>
+        <h3 th:text="'Priemerné hodnotenie hry: '+${averageRating}"> </h3>
+        <h3>Najlepšie skóre</h3>
+        <table class="scores">
+            <tr>
+                <th>Poradie</th>
+                <th>Meno</th>
+                <th>Body</th>
+                <th>Dátum a čas hry</th>
+            </tr>
+            <tr th:each="score: ${bestScores}">
+                <td th:text="${scoreStat.index+1}"></td>
+                <td th:text="${score.username}"></td>
+                <td th:text="${score.points}"></td>
+                <td th:text="${score.playedOn}"></td>
+            </tr>
+        </table>
+    </section>
+    <selection >
+
+        <h3>Komentáre</h3>
+        <table class="scores">
+            <tr>
+                <th>Meno</th>
+                <th>Comment</th>
+                <th>Dátum</th>
+
+            </tr>
+            <tr th:each="comment: ${allComments}">
+                <td th:text="${comment.getUsername}"></td>
+                <td th:text="${comment.getComment}"></td>
+                <td th:text="${comment.getCommented_on}"></td>
+            </tr>
+        </table>
+    </selection>
+    <div th:insert="fragments/fragments :: commentFormWestern"/>
+    <footer th:replace="fragments/fragments :: footer"/>
+</main>
+
+
+</body>
+</html>
+

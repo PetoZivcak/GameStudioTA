@@ -59,4 +59,12 @@ private long indent;
     public void setRated_on(Date rated_on) {
         this.rated_on = rated_on;
     }
+
+    public long getIndent() {
+        return indent;
+    }
+
+    public void setIndent(long indent) {
+        this.indent = indent;
+    }
 }

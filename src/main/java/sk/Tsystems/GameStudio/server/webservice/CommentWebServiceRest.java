@@ -1,6 +1,7 @@
 package sk.Tsystems.GameStudio.server.webservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import sk.Tsystems.GameStudio.entity.Comment;
 import sk.Tsystems.GameStudio.entity.Score;
@@ -21,7 +22,7 @@ public class CommentWebServiceRest {
         return commentService.getComments(game);
     }
     @PostMapping
-    public void addScore(@RequestBody Comment comment){
+    public void addComment(@RequestBody Comment comment){
         commentService.addComment(comment);
     }
 }

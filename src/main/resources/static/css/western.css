@@ -1,0 +1,295 @@
+body {
+    background-color: #ffffff;
+
+    font-size: 1rem;
+    font-family: Arial, "Arial CE", "Helvetica CE", sans-serif;
+    color: #000000;
+    max-width: 30rem;
+    margin: auto;
+    padding: 1em;
+
+}
+label{
+width: 120px;
+display: inline-block;}
+
+h1 {
+    font-size: 1.6em
+}
+
+h2 {
+    font-size: 1.4em
+}
+
+h3 {
+    font-size: 1.2em
+}
+
+a:link, a:visited {
+    color: #045491;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover {
+    color: #045491;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+
+/*Properties of the form elements*/
+
+label {
+    vertical-align: top;
+    display: inline-block; /*instead of inline (default)*/
+    min-width: 5em;
+}
+
+
+
+/*Properties of the tables with scores*/
+
+table.scores {
+    width: 100%;
+    border: black 2px;
+}
+
+table.scores th {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: dimgray;
+
+}
+
+table.scores tr:nth-child(even) {
+    background-color: lightgray
+}
+
+table.scores tr:nth-child(odd) {
+    background-color: white;
+}
+
+/*Properties of the control block above the westernfield*/
+div.minesControl{
+    border: 1px solid darkgrey;
+    border-radius: 0.4em;
+    padding: 0.5em;
+    min-width: 13em;
+}
+
+div.minesControl span.gameInfo{
+    width:13em;
+    display: inline-block;
+}
+
+/*Properties of the links we want to look like buttons*/
+
+a.abutton {
+    border: 1px solid darkslategrey;
+    display: inline-block;
+    width: 8em;
+    margin: 0.1em;
+    padding: 0.1em;
+    border-radius: 0.2em;
+    background-color: white;
+    font-weight: normal;
+}
+
+a.abutton:hover {
+    background-color: springgreen;
+    text-decoration: none;
+    font-weight: normal;
+}
+.hotelArea{
+background: url("/fig/western/Hotel.png");
+height: 30em;
+    width: 30em;
+    size: 50em;
+    background-size: cover;
+}
+.westernfield {
+
+background-position: center;
+background-size: cover;
+cursor: url("/fig/western/iconmonstr-crosshair-6.svg") 14 14,move;
+margin-left: 5em;
+text-align:center;
+width: 20em;
+    height: 20em;
+    border-spacing: 30px;
+}
+table.westernfield td {
+    text-align: center;
+    background-color: lightgray;
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 2.1em;
+    border-radius: 0.2em;
+
+}
+
+table.westernfield a:link,
+table.westernfield a:visited,
+table.westernfield a:link:hover,
+table.westernfield a:visited:hover {
+    color: inherit;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+table.westernfield a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+table.westernfield td.closed {
+background: url("/fig/western/Closedwindow.png");
+background-position: center;
+background-size: cover;
+
+
+}
+.firingArea{
+cursor: url("/fig/western/iconmonstr-crosshair-6.svg") 14 14,move;
+}
+
+table.westernfield td.openHOSTAGE {
+background: url("/fig/western/Hostage11.png");
+background-position: center;
+background-size: cover;
+
+}
+table.westernfield td.openENEMY {
+background: url("/fig/western/Enemy11.png");
+background-position: center;
+background-size: cover;
+
+}
+table.westernfield td.firedHOSTAGE {
+background: url("/fig/western/Hostage11Fired.png");
+background-position: center;
+background-size: cover;
+background-color: red;
+}
+table.westernfield td.firedENEMY {
+background: url("/fig/western/Enemy11Fired.png");
+background-position: center;
+background-size: cover;
+
+
+
+}
+
+
+/*table.westernfield td.closed:hover {
+    background-color: springgreen;
+}
+
+table.westernfield td.closed span {
+    display: none;
+}*/
+
+
+
+
+
+table.westernfield td.open0 {
+    color: lightgray;
+}
+
+table.westernfield td.open0 span {
+    display: none;
+}
+
+table.westernfield td.open1 {
+    color: blue;
+}
+
+table.westernfield td.open2 {
+    color: red;
+}
+
+table.westernfield td.open3 {
+    color: green;
+}
+
+table.westernfield td.open4 {
+    color: cyan;
+}
+
+table.westernfield td.open5 {
+    color: purple;
+}
+
+table.westernfield td.open6 {
+    color: orange;
+}
+
+table.westernfield td.open7 {
+    color: pink;
+}
+
+table.westernfield td.open8 {
+    color: yellow;
+}
+
+/*adjustment for smaller screens/viewports*/
+@media (max-width: 600px)/*,
+(min-resolution: 1.8dppx) */ {
+    body {
+        max-width: 95vw;
+    }
+
+    table.westernfield td {
+        font-size: calc(1em + 4vw);
+        width: 10vw;
+        height: 10vw;
+        min-width: 1em;
+        min-height: 1em;
+    }
+}
+
+@media (max-height: 780px),
+(max-width: 600px) and (orientation: landscape)/*,
+(min-resolution: 1.8dppx)  and (orientation:landscape)*/ {
+
+    table.westernfield td {
+        font-size: calc(1em + 2vh);
+        width: 5vh;
+        height: 5vh;
+    }
+}
+
+/*some animation for mine*/
+table.westernfield td.mine {
+    animation-name: explosion;
+    animation-direction: normal;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+}
+
+@keyframes explosion{
+    from {
+        background-image: none;
+        background-color: white;
+    }
+    20%{
+        background-color: darkgray;
+    }
+    30%{
+        background-color: yellow;
+    }
+    to{
+        background-color: red;
+        background-image: url("/fig/minesweeper/mine.svg");
+    }
+}
+
+
+
+

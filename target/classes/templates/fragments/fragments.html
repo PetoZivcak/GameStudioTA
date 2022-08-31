@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sk">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Gamestudio</title>
+</head>
+<body>
+<header th:fragment="header">
+    <h1>Vitajte v <a href="/gamestudio">Gamestudio!</a></h1>
+
+    <div th:if="${@userController.logged}">
+        Prihlásený/á ako: <span th:text="${@userController.loggedUser}"/>,môžete vybrať hru, alebo
+        <a href="/logout">odhlásiť sa</a>
+    </div>
+
+    <div th:if="not ${@userController.logged}">
+        Neprihlásený/á. Prosím,
+        <a href="/gamestudio">prihláste sa</a>.
+    </div>
+
+</header>
+<div th:if="${@userController.logged} " th:fragment="commentForm">
+<!--    <form action="/api/comment" th:object="${comment}" method="post" >-->
+<!--        <label for="comment">Váš comment: </label> <input id="comment" type="text"  name="comment" th:field="*{comment}"/>-->
+<!--        <p th:field="*{game}" hidden>minesweeper</p>-->
+<!--        <p th:field="*{username}" hidden>minesweepergamer</p>-->
+
+<!--        <button type="submit">Odošli comment</button>-->
+<!--    </form>-->
+    <form action="/minesweeper/addComment"  method="post" >
+        <label for="comment">Váš comment: </label> <input id="comment" type="text"  name="myComment" />
+        <input type="text" hidden name="game" value="minesweeper">
+
+        <button type="submit">Odošli comment</button>
+    </form>
+
+    <form action="/minesweeper/addRating"  method="post" >
+        <label for="rating">Váš Rating: </label> <input id="rating" type="text"  name="myRating" />
+        <input type="text" hidden name="game" value="minesweeper">
+
+
+
+        <button type="submit">Odošli rating</button>
+    </form>
+
+</div>
+<div th:if="${@userController.logged==false} " th:fragment="commentForm">
+    <!--    <form action="/api/comment" th:object="${comment}" method="post" >-->
+    <!--        <label for="comment">Váš comment: </label> <input id="comment" type="text"  name="comment" th:field="*{comment}"/>-->
+    <!--        <p th:field="*{game}" hidden>minesweeper</p>-->
+    <!--        <p th:field="*{username}" hidden>minesweepergamer</p>-->
+
+    <!--        <button type="submit">Odošli comment</button>-->
+    <!--    </form>-->
+    <form  >
+        <label for="commentFalse">Váš comment: </label> <input id="commentFalse" type="text"  name="myComment" placeholder="Nemôžeš komentovať, lebo nie si prihlásený" />
+        <input type="text" hidden name="game" value="minesweeper">
+
+        <button type="submit">Odošli comment</button>
+    </form>
+
+    <form  >
+        <label for="ratingFalse">Váš Rating: </label> <input id="ratingFalse" type="text"  name="myRating"  placeholder="Nemôžeš hodnotiť, lebo nie si prihlásený"/>
+        <input type="text" hidden name="game" value="minesweeper">
+
+
+
+        <button type="submit">Odošli rating</button>
+    </form>
+
+</div>
+
+
+
+
+
+<div th:if="${@userController.logged} " th:fragment="commentFormStones">
+    <!--    <form action="/api/comment" th:object="${comment}" method="post" >-->
+    <!--        <label for="comment">Váš comment: </label> <input id="comment" type="text"  name="comment" th:field="*{comment}"/>-->
+    <!--        <p th:field="*{game}" hidden>minesweeper</p>-->
+    <!--        <p th:field="*{username}" hidden>minesweepergamer</p>-->
+
+    <!--        <button type="submit">Odošli comment</button>-->
+    <!--    </form>-->
+    <form action="/stones/addComment"  method="post" >
+        <label for="commentStones">Váš comment: </label> <input id="commentStones" type="text"  name="myComment" />
+        <input type="text" hidden name="game" value="stones">
+
+        <button type="submit">Odošli comment</button>
+    </form>
+
+    <form action="/stones/addRating"  method="post" >
+        <label for="ratingStones">Váš Rating: </label> <input id="ratingStones" type="text"  name="myRating" />
+        <input type="text" hidden name="game" value="stones">
+
+
+
+        <button type="submit">Odošli rating</button>
+    </form>
+
+</div>
+<div th:if="${@userController.logged==false} " th:fragment="commentFormStones">
+    <!--    <form action="/api/comment" th:object="${comment}" method="post" >-->
+    <!--        <label for="comment">Váš comment: </label> <input id="comment" type="text"  name="comment" th:field="*{comment}"/>-->
+    <!--        <p th:field="*{game}" hidden>minesweeper</p>-->
+    <!--        <p th:field="*{username}" hidden>minesweepergamer</p>-->
+
+    <!--        <button type="submit">Odošli comment</button>-->
+    <!--    </form>-->
+    <form>
+        <label for="commentStonesFalse">Váš comment: </label> <input id="commentStonesFalse" type="text"  name="myComment" placeholder="Nemôžeš komentovať, lebo nie si prihlásený"/>
+        <input type="text" hidden name="game" value="stones">
+
+        <button type="submit">Odošli comment</button>
+    </form>
+
+    <form  >
+        <label for="ratingStonesFalse">Váš Rating: </label> <input id="ratingStonesFalse" type="text"  name="myRating" placeholder="Nemôžeš hodnotiť, lebo nie si prihlásený" />
+        <input type="text" hidden name="game" value="stones">
+
+
+
+        <button type="submit">Odošli rating</button>
+    </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div th:if="${@userController.logged} " th:fragment="commentFormWestern">
+    <!--    <form action="/api/comment" th:object="${comment}" method="post" >-->
+    <!--        <label for="comment">Váš comment: </label> <input id="comment" type="text"  name="comment" th:field="*{comment}"/>-->
+    <!--        <p th:field="*{game}" hidden>minesweeper</p>-->
+    <!--        <p th:field="*{username}" hidden>minesweepergamer</p>-->
+
+    <!--        <button type="submit">Odošli comment</button>-->
+    <!--    </form>-->
+    <form action="/western/addComment"  method="post" >
+        <label for="commentWestern">Váš comment: </label> <input id="commentWestern" type="text"  name="myComment" />
+        <input type="text" hidden name="game" value="western">
+
+        <button type="submit">Odošli comment</button>
+    </form>
+
+    <form action="/western/addRating"  method="post" >
+        <label for="ratingWestern">Váš Rating: </label> <input id="ratingWestern" type="text"  name="myRating" />
+        <input type="text" hidden name="game" value="western">
+
+
+
+        <button type="submit">Odošli rating</button>
+    </form>
+
+</div>
+<div th:if="${@userController.logged==false} " th:fragment="commentFormWestern">
+    <!--    <form action="/api/comment" th:object="${comment}" method="post" >-->
+    <!--        <label for="comment">Váš comment: </label> <input id="comment" type="text"  name="comment" th:field="*{comment}"/>-->
+    <!--        <p th:field="*{game}" hidden>minesweeper</p>-->
+    <!--        <p th:field="*{username}" hidden>minesweepergamer</p>-->
+
+    <!--        <button type="submit">Odošli comment</button>-->
+    <!--    </form>-->
+    <form>
+        <label for="commentWesternFalse">Váš comment: </label> <input id="commentWesternFalse" type="text"  name="myComment" placeholder="Nemôžeš komentovať, lebo nie si prihlásený"/>
+        <input type="text" hidden name="game" value="western">
+
+        <button type="submit">Odošli comment</button>
+    </form>
+
+    <form  >
+        <label for="ratingWesternFalse">Váš Rating: </label> <input id="ratingWesternFalse" type="text"  name="myRating" placeholder="Nemôžeš hodnotiť, lebo nie si prihlásený" />
+        <input type="text" hidden name="game" value="western">
+
+
+
+        <button type="submit">Odošli rating</button>
+    </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div th:if="${@userController.logged==false} " th:fragment="commentFormStones">-->
+<!--    &lt;!&ndash;    <form action="/api/comment" th:object="${comment}" method="post" >&ndash;&gt;-->
+<!--    &lt;!&ndash;        <label for="comment">Váš comment: </label> <input id="comment" type="text"  name="comment" th:field="*{comment}"/>&ndash;&gt;-->
+<!--    &lt;!&ndash;        <p th:field="*{game}" hidden>minesweeper</p>&ndash;&gt;-->
+<!--    &lt;!&ndash;        <p th:field="*{username}" hidden>minesweepergamer</p>&ndash;&gt;-->
+
+<!--    &lt;!&ndash;        <button type="submit">Odošli comment</button>&ndash;&gt;-->
+<!--    &lt;!&ndash;    </form>&ndash;&gt;-->
+<!--    <form>-->
+<!--        <label for="commentStonesFalse">Váš comment: </label> <input id="commentStonesFalse" type="text"  name="myComment" placeholder="Nemôžeš komentovať, lebo nie si prihlásený"/>-->
+<!--        <input type="text" hidden name="game" value="stones">-->
+
+<!--        <button type="submit">Odošli comment</button>-->
+<!--    </form>-->
+
+<!--    <form  >-->
+<!--        <label for="ratingStonesFalse">Váš Rating: </label> <input id="ratingStonesFalse" type="text"  name="myRating" placeholder="Nemôžeš hodnotiť, lebo nie si prihlásený" />-->
+<!--        <input type="text" hidden name="game" value="stones">-->
+
+
+
+<!--        <button type="submit">Odošli rating</button>-->
+<!--    </form>-->
+
+<!--</div>-->
+
+
+<footer th:fragment="footer">
+
+
+
+    <hr/>
+    Gamestudio ver. TSyst 2002/08.
+    Vyvinuté na <a href="https://kpi.fei.tuke.sk">KPI FEI TUKE</a>.
+
+
+</footer>
+</body>
+</html>

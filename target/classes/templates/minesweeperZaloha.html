@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      Thymeleaf fragmenty a layout
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutGamestudio.html}"
+      lang="sk">
+<head>
+<!--  <meta charset="UTF-8" />-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--  <meta name="author" content="Stefan Korecko" />-->
+<!--  <link rel="stylesheet"-->
+<!--        href="/css/mines.css"-->
+<!--        media="screen" />-->
+
+
+  <title>GameStudio - Minesweeper</title>
+</head>
+
+<body>
+<main layout:fragment="content">
+<!--<div th:insert="fragments/fragments :: header"/> VPISE DO ELEMENTU V KTOROM SA NACHADZA-->
+<!--<div th:replace="fragments/fragments :: header"/> NAHRADI ELEMENT JE JEDNO AKY JE-->
+<h2>Minesweeper</h2>
+
+<div class="minesControl">
+    <span th:if="${@minesweeperController.marking}">
+        Prave oznacujes.
+        <a  class="abutton" href="/minesweeper/mark">Zmen na otvaranie.</a>
+    </span>
+
+  <span th:if="not ${@minesweeperController.marking}">
+        Prave otvaras.
+        <a  class="abutton" href="/minesweeper/mark">Zmen na oznacovanie.</a>
+    </span>
+
+
+  <a  class="abutton" href="/minesweeper/new">Nova hra</a>
+
+</div>
+
+<!--<div th:utext="${@minesweeperController.fieldAsHtml}"></div>-->
+<div th:text="${minesweeperResult}"></div>
+<div>
+    <table class='minefield'>
+        <tr th:each="row: ${minesweeperField}">
+            <td th:each="tile: ${row}"
+                th:attr="class=${@minesweeperController.getTileClass(tile)}">
+                <a th:if="${!gameStatusMine}">
+                    <span th:text="${@minesweeperController.getTileText(tile)}"></span>
+                </a>
+                <a th:if="${gameStatusMine}" th:attr="href='/minesweeper/?row='+${rowStat.index}+'&column='+${tileStat.index}">
+                    <span th:text="${@minesweeperController.getTileText(tile)}"></span>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+<table>
+    <tr>
+        <th>Meno</th>
+        <th>Body</th>
+    </tr>
+    <tr th:each="score: ${minesweeperScoreList}">
+
+    <td th:text="${minesweeperScoreList.get(scoreStat.index).getUsername}"></td>
+    <td th:text="${minesweeperScoreList.get(scoreStat.index).getPoints}"></td>
+    </tr>
+</table>
+
+<!--<aside th:text="${message}"></aside>-->
+  <!--<div th:text="${1+2}"></div>-->
+  <!--<div th:text="${@minesweeperController.getCurrTime()}"></div>-->
+  <!--<div th:text="${@minesweeperController.currTime}"></div>-->
+</main>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="sk">
+<head>
+    <!--  <meta charset="UTF-8" />-->
+    <!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--  <meta name="author" content="Stefan Korecko" />-->
+    <!--  <link rel="stylesheet"-->
+    <!--        href="/css/mines.css"-->
+    <!--        media="screen" />-->
+
+
+    <title>Registrácia</title>
+</head>
+
+<body>
+<form action="/addUser" id="registrationForm">
+    <div class="container">
+        <h1>Registračný formulár</h1>
+        <p>Prosím vyplňte registračný formulár.</p>
+        <hr>
+
+        <label for="userName"><b>Uživateľské meno</b></label>
+        <input type="text" placeholder="Uživateľské meno" name="userName" id="userName" required>
+
+        <label for="fullName"><b>Meno</b></label>
+        <input type="text" placeholder="Celé meno" name="fullName" id="fullName" >
+
+        <label for="psw"><b>Heslo</b></label>
+        <input type="password" placeholder="Enter Heslo" name="psw" id="psw" required>
+        <select form="registrationForm" id="myCountry" name="myCountry" >
+            <option value="0">Žiadna krajina</option>
+            <option th:each="option: ${getCountries}" th:value="${optionStat.index+1}" th:text="${option.Country}">
+            </option>
+        </select>
+        <select form="registrationForm" id="myOccupation" name="myOccupation">
+            <option value="0">Žiadne povolanie</option>
+            <option th:each="option: ${getOccupations}" th:value="${optionStat.index+1}" th:text="${option.Occupation}">
+            </option>
+        </select>
+
+
+
+        <hr>
+
+
+        <button type="submit" class="registerbtn" >Register</button>
+    </div>
+
+<!--    <div class="container signin">-->
+<!--        <p>Already have an account? <a href="#">Sign in</a>.</p>-->
+<!--    </div>-->
+</form>
+
+</body>
+</html>

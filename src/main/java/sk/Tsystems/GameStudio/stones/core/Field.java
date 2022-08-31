@@ -39,6 +39,10 @@ public class Field {
 
     private static final Pattern PATTERN = Pattern.compile("([0-9]{1})([S]{1})([0-9]{1})", Pattern.CASE_INSENSITIVE);
 
+    public Square[][] getSquares() {
+        return squares;
+    }
+
     public void moveSquare(String command) {
         String myString;
 //        int emptySquare;
@@ -130,7 +134,7 @@ public class Field {
         return result;
     }
 
-    private String findEmpty() {
+    public String findEmpty() {
         String myEmpty = "";
         for (int i = 0; i < nrOfRow; i++) {
             for (int j = 0; j < nrOfCol; j++) {
@@ -143,6 +147,9 @@ public class Field {
         }
 
         return myEmpty;
+    }
+    public GameState getState(){
+        return state;
     }
 
     public boolean solvedGame() {
@@ -170,6 +177,8 @@ public class Field {
     public int getScore() {
         return nrOfRow * nrOfCol * 10 - getPlayTimeInSeconds();
     }
+
+
 
 
 }

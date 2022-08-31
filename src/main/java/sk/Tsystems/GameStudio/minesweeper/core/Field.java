@@ -63,27 +63,30 @@ public class Field {
     public void openTile(int row, int column) {
         Tile tile = tiles[row][column];
 
-        if (tile.getState() == Tile.State.CLOSED) {
-            tile.setState(Tile.State.OPEN);
-            if (tile instanceof Clue) {
-                this.openTile(row, column);
-            }
-            if (tile instanceof Clue && ((Clue) tile).getValue() == 0) {
-                openAdjacentMines(row, column);
-            }
-            if (tile instanceof Mine) {
-                state = GameState.FAILED;
-                return;
-            }
+        if (tile.getState() == Tile.State.MARKED) {
+            tile.setState(Tile.State.MARKED);
+        } else {
+            if (tile.getState() == Tile.State.CLOSED) {
+                tile.setState(Tile.State.OPEN);
+                if (tile instanceof Clue) {
+                    this.openTile(row, column);
+                }
+                if (tile instanceof Clue && ((Clue) tile).getValue() == 0) {
+                    openAdjacentMines(row, column);
+                }
+                if (tile instanceof Mine) {
+                    state = GameState.FAILED;
+                    return;
+                }
 
-            if (isSolved()) {
-                state = GameState.SOLVED;
-                return;
+                if (isSolved()) {
+                    state = GameState.SOLVED;
+                    return;
+                }
+
             }
-            if (tile.getState()==Tile.State.MARKED){tile.setState(Tile.State.MARKED);}
         }
     }
-
     /**
      * Marks tile at specified indeces.
      *
@@ -91,19 +94,18 @@ public class Field {
      * @param column column number
      */
     public void markTile(int row, int column) {
-
-        Tile currentTile = getTile(row, column);
-
-        if (currentTile.getState() == Tile.State.CLOSED) {
-            currentTile.setState(Tile.State.MARKED);
-        } else {
-            if (currentTile.getState() == Tile.State.MARKED) {
-                currentTile.setState(Tile.State.CLOSED);
+        if (state == GameState.PLAYING) {
+            var tile = getTile(row, column);
+            if (tile.getState() == Tile.State.CLOSED) {
+                tile.setState(Tile.State.MARKED);
+            } else if (tile.getState() == Tile.State.MARKED) {
+                tile.setState(Tile.State.CLOSED);
             }
         }
+    }
 
         //throw new UnsupportedOperationException("Method markTile not yet implemented");
-    }
+
 
     /**
      * Generates playing field.
@@ -293,4 +295,8 @@ public class Field {
 //           //DOPRACUJ
 //        }
 //    }
+
+    public Tile[][] getTiles(){
+        return tiles;
+    }
 }

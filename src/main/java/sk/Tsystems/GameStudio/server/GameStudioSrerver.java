@@ -23,7 +23,7 @@ public class GameStudioSrerver {
 
     public static void main(String[] args) {
 
-        //SpringApplication.run(SpringClient.class);
+       // SpringApplication.run(SpringClient.class);
         SpringApplication.run(GameStudioSrerver.class);
     }
 
@@ -32,10 +32,10 @@ public class GameStudioSrerver {
         return new ScoreServiceJPA();
     }
 
-    @Bean
-    public ScoreService scoreService2() {
-        return new ScoreServiceJPA();
-    }
+//    @Bean
+//    public ScoreService scoreService2() {
+//        return new ScoreServiceJPA();
+//    }
 
     @Bean
     public CommentService commentService() {
@@ -58,6 +58,7 @@ public class GameStudioSrerver {
     }
     @Bean
     public RatingService ratingService(){return  new RatingServiceJPA();}
+
 
 
 }

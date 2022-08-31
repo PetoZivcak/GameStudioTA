@@ -35,9 +35,8 @@ public class PlayerServiceJPA implements PlayerService{
         Player playerToWrite=null;
         try {
 
-           playerToWrite=(Player)  entityManager.createQuery("select p from Player p where p.username=:uname and p.fullname=:fname")
+           playerToWrite=(Player)  entityManager.createQuery("select p from Player p where p.username=:uname")
                     .setParameter("uname",player.getUsername())
-                    .setParameter("fname",player.getFullname())
                     .getSingleResult();
            playerToWrite.setSelfevaluation(player.getSelfevaluation());
 //           playerToWrite.setUsername(player.getUsername());
@@ -45,7 +44,7 @@ public class PlayerServiceJPA implements PlayerService{
 //           playerToWrite.setCountry(player.getCountry());
 //           playerToWrite.setOccupation(player.getOccupation());
            if (playerToWrite!=null){
-               System.out.println("Hrac s user name "+player.getUsername()+" a full name "+player.getFullname()+" uz existuje");
+               System.out.println("Hrac s user name "+player.getUsername()+" uz existuje");
            }
 
         }catch (NoResultException e){

@@ -62,6 +62,22 @@ public class CountryServiceJPA implements CountryService {
         }
         return null;
     }
+    public Country getCountryInt(int countryIndex) {
+        try {
+
+            return (Country) entityManager.createQuery("select c from Country c where c.ident= :ident ")
+
+                    .setParameter("ident", countryIndex)
+                    .getSingleResult();
+
+
+        } catch (NoResultException e) {
+
+            // entityManager.persist(countryToWrite);
+
+        }
+        return null;
+    }
 
 
 }
