@@ -38,7 +38,11 @@ public class Field {
      * @param rowCount    row count
      * @param columnCount column count
      * @param mineCount   mine count
+     *
      */
+
+    private boolean justFinished=false;
+    private boolean marking=false;
     public Field(int rowCount, int columnCount, int mineCount) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
@@ -298,5 +302,20 @@ public class Field {
 
     public Tile[][] getTiles(){
         return tiles;
+    }
+    public boolean isJustFinished() {
+        return justFinished;
+    }
+
+    public void setJustFinished(boolean justFinished) {
+        this.justFinished = justFinished;
+    }
+
+    public boolean isMarking() {
+        return marking;
+    }
+
+    public void setMarking(boolean marking) {
+        this.marking = marking;
     }
 }

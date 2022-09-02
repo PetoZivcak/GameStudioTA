@@ -5,6 +5,10 @@ import java.util.List;
 
 @Entity
 public class Occupation {
+    public int getIdent() {
+        return ident;
+    }
+
     @Id
     @GeneratedValue
     private int ident;

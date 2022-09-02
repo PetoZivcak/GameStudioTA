@@ -6,6 +6,10 @@ import java.util.List;
 @Entity
 public class Country {
 
+    public int getIdent() {
+        return ident;
+    }
+
     @Id
     @GeneratedValue
     private int ident;

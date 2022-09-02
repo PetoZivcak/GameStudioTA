@@ -30,7 +30,7 @@ public class Field {
         return squares[r][c];
     }
     long startMillis;
-
+    private boolean justFinished=false;
 //    public Square[][] getSquares(int r, int c) {
 //        return this.squares[r][c];
 //    }
@@ -177,8 +177,13 @@ public class Field {
     public int getScore() {
         return nrOfRow * nrOfCol * 10 - getPlayTimeInSeconds();
     }
+    public boolean isJustFinished() {
+        return justFinished;
+    }
 
-
+    public void setJustFinished(boolean justFinished) {
+        this.justFinished = justFinished;
+    }
 
 
 }

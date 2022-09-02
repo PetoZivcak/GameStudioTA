@@ -3,10 +3,12 @@ package sk.Tsystems.GameStudio.server.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import sk.Tsystems.GameStudio.entity.Score;
 
@@ -30,6 +32,7 @@ public class StonesController {
     @Autowired
     ScoreService scoreService;
     @Autowired
+
     RatingService ratingService;
     @Autowired
     CommentService commentService;
@@ -37,12 +40,13 @@ public class StonesController {
     private UserController userController;
     private List<Score> myScore;
     private Field field = new Field(3, 3);
-
+    private boolean isPlaying = true;
     // private boolean marking = false;
 
     @RequestMapping
     public String stones(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model) {
-        if(row == null && column == null){
+        boolean justFinished = false;
+        if (row == null && column == null) {
             newGame(model);
         }
 
@@ -68,8 +72,28 @@ public class StonesController {
                 field.moveSquare("L");
 
             }
-            prepareModel(model);
-            return "stones";
+
+
+
+
+            }
+
+
+        if (field.solvedGame()==true) {
+            justFinished = true;
+
+            if (field.solvedGame()==true && this.isPlaying == true) { //I just won/lose
+                this.isPlaying = false;
+                int checker = 0;
+                if (userController.isLogged() && field.solvedGame()==true && checker == 0) {
+
+
+                    Score newScore = new Score("stones", userController.getLoggedUser(), this.field.getScore(), new Date());
+                    scoreService.addScore(newScore);
+                    checker = 1;
+                }
+
+            }
         }
 //
 //            if (marking) {
@@ -85,10 +109,34 @@ public class StonesController {
 
     @RequestMapping("/new")
     public String newGame(Model model) {
-        field = new Field(3, 3);
-        makeChaos(field);
+        startNewGame();
         prepareModel(model);
         return "stones";
+    }
+
+    @RequestMapping("/asynch")
+    public String loadInAsynchMode() {
+
+        startOrUpdateGame(null, null, null);
+        this.field.solvedGame();
+        return "stonesAsynch";
+    }
+
+    @RequestMapping(value = "/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Field processUserInputJson(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, @RequestParam(required = false) String command) {
+        boolean justFinished = startOrUpdateGame(row, column,command);
+        this.field.setJustFinished(justFinished);
+        this.field.solvedGame();
+        return this.field;
+    }
+
+    @RequestMapping(value = "/jsonnew", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Field newGameJson() {
+        startNewGame();
+        this.field.setJustFinished(false);
+        return this.field;
     }
 
     private void prepareModel(Model model) {
@@ -99,7 +147,7 @@ public class StonesController {
         model.addAttribute("stonesResult", winnOrLoss(field.getState()));
         model.addAttribute("bestScores", scoreService.getBestScores("stones"));
         model.addAttribute("allComments", commentService.getComments("stones"));
-        model.addAttribute("averageRating",ratingService.getAverageRating("stones"));
+        model.addAttribute("averageRating", ratingService.getAverageRating("stones"));
 
         // model.addAttribute("bestScores",);
 
@@ -116,9 +164,9 @@ public class StonesController {
             return "Prehral si, tvoje score je" + " 0";
         }
         if (gameState.equals(GameState.SOLVED)) {
-            scoreService.addScore(new Score("stones", userController.getLoggedUser(), field.getScore(), new Date()));
 
-            return "Vyhral si, tvoje score je " + field.getScore()+" bodov.";
+
+            return "Vyhral si, tvoje score je " + field.getScore() + " bodov.";
         }
         return "Práve hraješ";
     }
@@ -161,5 +209,79 @@ public class StonesController {
         }
 
     }
+
+    public void startNewGame() {
+        field = new Field(3, 3);
+        makeChaos(field);
+    }
+
+    private boolean startOrUpdateGame(Integer row, Integer column, String command) {
+        boolean justFinished = false;
+
+        if (row == null && column == null & command==null) {
+            startNewGame();
+        }
+        if (command != null) {
+            field.moveSquare(command);
+            if (field.getState().equals(GameState.SOLVED)) {
+              justFinished = true;
+            }
+            return justFinished;
+        }
+        if (row != null && column != null) {
+//   int nullRow=  Integer.valueOf(field.findEmpty().charAt(0));
+//   int nullCol=  Integer.valueOf(field.findEmpty().charAt(2));
+            String[] arrStr = field.findEmpty().split("S");
+            int nullRow = Integer.parseInt(arrStr[0]);
+            int nullCol = Integer.parseInt(arrStr[1]);
+            if (row + 1 == nullRow && column == nullCol) {
+                field.moveSquare("D");
+
+            }
+            if (row - 1 == nullRow && column == nullCol) {
+                field.moveSquare("U");
+
+            }
+            if (column + 1 == nullCol && row == nullRow) {
+                field.moveSquare("R");
+
+            }
+            if (column - 1 == nullCol && row == nullRow) {
+                field.moveSquare("L");
+
+            }
+
+
+
+
+        }
+        if (field.solvedGame()==true) {
+            justFinished = true;
+
+            if (this.field.solvedGame()==true && this.isPlaying == true) { //I just won/lose
+                this.isPlaying = false;
+                int checker = 0;
+                if (userController.isLogged() &&  field.solvedGame()==true && checker == 0) {
+
+
+                    Score newScore = new Score("stones", userController.getLoggedUser(), this.field.getScore(), new Date());
+                    scoreService.addScore(newScore);
+                    checker = 1;
+                }
+
+            }
+        }
+        return justFinished;
+    }
+//    private boolean startOrUpdateKeyboardInput(String command){
+//        boolean justFinished = false;
+//        if(command!=null){
+//            field.moveSquare(command);
+//        }
+//        if(field.getState().equals(GameState.SOLVED)){
+//             justFinished = true;
+//        }
+//        return justFinished;
+//    }
 
 }

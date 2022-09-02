@@ -10,6 +10,10 @@ import java.util.Date;
 
 @Entity
 public class Comment implements Serializable {
+    public long getIndent() {
+        return indent;
+    }
+
     @Id
     @GeneratedValue
     private long indent;

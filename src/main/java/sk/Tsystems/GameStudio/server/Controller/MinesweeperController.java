@@ -2,10 +2,12 @@ package sk.Tsystems.GameStudio.server.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import sk.Tsystems.GameStudio.entity.Comment;
 import sk.Tsystems.GameStudio.entity.Score;
@@ -78,10 +80,36 @@ public class MinesweeperController {
     }
 
     @RequestMapping("/asynch")
-    public String loadInAsynchMode(Model model){
+    public String loadInAsynchMode(){
         startOrUpdateGame(null,null);
-        prepareModel(model);
+
         return "minesweeperAsynch";
+    }
+    @RequestMapping(value="/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Field processUserInputJson(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column){
+        boolean justFinished = startOrUpdateGame(row,column);
+        this.field.setJustFinished(justFinished);
+        this.field.setMarking(marking);
+        return this.field;
+    }
+
+    @RequestMapping(value="/jsonmark", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public  Field changeMarkingJson(){
+        switchMode();
+        this.field.setJustFinished(false);
+        this.field.setMarking(marking);
+        return this.field;
+    }
+
+    @RequestMapping(value="/jsonnew", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public  Field newGameJson(){
+        startNewGame();
+        this.field.setJustFinished(false);
+        this.field.setMarking(marking);
+        return this.field;
     }
 
     public String getCurrTime() {
@@ -176,7 +204,11 @@ public class MinesweeperController {
                 throw new RuntimeException("Unexpected tile state");
         }
     }
-
+    private void switchMode(){
+        if(this.field.getState()==GameState.PLAYING){
+            this.marking = !this.marking;
+        }
+    }
     /**
      * Fills the Spring MVC model object for the Thymeleaf template
      *

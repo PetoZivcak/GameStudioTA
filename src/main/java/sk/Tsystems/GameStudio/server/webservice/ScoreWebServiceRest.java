@@ -21,7 +21,7 @@ public class ScoreWebServiceRest {
     @GetMapping("/{game}")
     public List<Score> getBestScores(@PathVariable String game) {
 
-        return scoreService.getBestScores("minesweeper");
+        return scoreService.getBestScores(game);
     }
     @PostMapping
     public void addScore(@RequestBody Score score){

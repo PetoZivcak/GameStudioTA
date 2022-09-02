@@ -14,6 +14,7 @@ public class Field {
     long startMillis;
 
     private Tile[][] tiles;
+    private boolean justFinished=false;
     public Field() {
     }
 
@@ -192,6 +193,13 @@ public class Field {
         }
         startMillis = System.currentTimeMillis();
 
+    }
+    public boolean isJustFinished() {
+        return justFinished;
+    }
+
+    public void setJustFinished(boolean justFinished) {
+        this.justFinished = justFinished;
     }
 
 }

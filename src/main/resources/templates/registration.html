@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
       lang="sk">
 <head>
-    <!--  <meta charset="UTF-8" />-->
-    <!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
-    <!--  <meta name="author" content="Stefan Korecko" />-->
-    <!--  <link rel="stylesheet"-->
-    <!--        href="/css/mines.css"-->
-    <!--        media="screen" />-->
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="author" content="Stefan Korecko" />
+      <link rel="stylesheet"
+            href="/css/form.css"
+            media="screen" />
 
 
     <title>Registrácia</title>
@@ -28,14 +28,16 @@
 
         <label for="psw"><b>Heslo</b></label>
         <input type="password" placeholder="Enter Heslo" name="psw" id="psw" required>
+        <label for="myCountry"><b>Vyberte krajinu</b></label>
         <select form="registrationForm" id="myCountry" name="myCountry" >
             <option value="0">Žiadna krajina</option>
-            <option th:each="option: ${getCountries}" th:value="${optionStat.index+1}" th:text="${option.Country}">
+            <option th:each="option: ${getCountries}" th:value="${option.ident}" th:text="${option.Country}">
             </option>
         </select>
-        <select form="registrationForm" id="myOccupation" name="myOccupation">
+        <label for="myOccupation"><b>Vyberte povolanie</b></label>
+        <select form="registrationForm" id="myOccupation" name="myOccupation">Vyberte povolanie
             <option value="0">Žiadne povolanie</option>
-            <option th:each="option: ${getOccupations}" th:value="${optionStat.index+1}" th:text="${option.Occupation}">
+            <option th:each="option: ${getOccupations}" th:value="${option.ident}" th:text="${option.Occupation}">
             </option>
         </select>
 
